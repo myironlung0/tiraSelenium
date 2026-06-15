@@ -31,10 +31,7 @@ public class RezerwacjeTest {
 
     @BeforeEach
     public void setUp() {
-        System.setProperty(
-                "webdriver.gecko.driver",
-                "/opt/homebrew/bin/geckodriver"
-        );
+        System.setProperty("webdriver.gecko.driver", "/opt/homebrew/bin/geckodriver");
 
         FirefoxOptions options = new FirefoxOptions();
 
