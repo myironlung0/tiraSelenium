@@ -24,9 +24,9 @@ public class SeleniumTestPlanUZ {
 
     @BeforeEach
     public void setUp() {
-        System.setProperty("webdriver.gecko.driver", "/opt/homebrew/bin/geckodriver");
+        System.setProperty("webdriver.gecko.driver", "D:\\Informatyka\\Studia\\TestowanieAplikacji\\geckodriver\\geckodriver.exe");
         // no firefox in PATH
-        FirefoxBinary firefoxBinary = new FirefoxBinary(new java.io.File("/Applications/Firefox.app/Contents/MacOS/firefox"));
+        FirefoxBinary firefoxBinary = new FirefoxBinary(new java.io.File("C:\\Program Files\\Mozilla Firefox\\firefox.exe"));
 
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary(firefoxBinary);
@@ -61,6 +61,6 @@ public class SeleniumTestPlanUZ {
         element.click();
         //driver.findElement(By.linkText("dr inż. Jacek Bieganowski")).click();
         System.out.println("" + driver.findElement(By.cssSelector(".main")).getText());
-        assertThat(driver.findElement(By.cssSelector(".main")).getText(), containsString("Seminarium IMEI"));
+        assertThat(driver.findElement(By.cssSelector(".main")).getText(), containsString("Seminarium Instytutowe IMEI"));
     }
 }
