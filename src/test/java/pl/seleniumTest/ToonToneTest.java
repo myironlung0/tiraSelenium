@@ -67,10 +67,11 @@ public class ToonToneTest {
     WebElement light = driver.findElement(By.id("light-input"));
 
     js.executeScript("arguments[0].value=304;" + "arguments[0].dispatchEvent(new Event('input',{bubbles:true}));", hue);
-
     js.executeScript("arguments[0].value=100;" + "arguments[0].dispatchEvent(new Event('input',{bubbles:true}));", sat);
-
     js.executeScript("arguments[0].value=100;" + "arguments[0].dispatchEvent(new Event('input',{bubbles:true}));", light);
+    assertThat(driver.findElement(By.id("hue-input")).getAttribute("value"), is("304"));
+    assertThat(driver.findElement(By.id("sat-input")).getAttribute("value"), is("100"));
+    assertThat(driver.findElement(By.id("light-input")).getAttribute("value"), is("100"));
 
     driver.findElement(By.id("submit-btn")).click();
     Thread.sleep(2000);
