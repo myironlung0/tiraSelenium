@@ -62,12 +62,27 @@ public class SeleniumShopTest {
     driver.findElement(By.linkText("View Product")).click();
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-    //reklama
     try {
-      WebElement btn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".continue-prompt-text")));
-      ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+      driver.switchTo().defaultContent();
+      List<WebElement> iframes = driver.findElements(By.tagName("iframe"));
+      for (WebElement iframe : iframes) {
+        try {
+          driver.switchTo().frame(iframe);
+          List<WebElement> closeBtns = driver.findElements(By.cssSelector("button[aria-label*='Close'], div[aria-label*='Close']"));
+          if (!closeBtns.isEmpty()) {
+            WebElement btn = closeBtns.get(0);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+            driver.switchTo().defaultContent();
+            break;
+          }
+          driver.switchTo().defaultContent();
+        } catch (Exception e) {
+          driver.switchTo().defaultContent();
+        }
+      }
     } catch (Exception e) {}
 
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".product-information")));
     //sprawdzanie czy przeszliśmy na odpowiednią strone
     assertThat(driver.getCurrentUrl().matches(".*/product_details/\\d+$"), is(true));
     WebElement qty = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("quantity")));
@@ -80,13 +95,6 @@ public class SeleniumShopTest {
     driver.findElement(By.cssSelector(".btn.btn-default.cart")).click();
     wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".btn.btn-success.close-modal.btn-block"))).click();
     driver.findElement(By.xpath("//a[contains(text(),'Products')]")).click();
-
-    // kolejna reklama
-    if (!driver.findElements(By.cssSelector(".continue-prompt-text")).isEmpty()) {
-      WebElement btn = driver.findElement(By.cssSelector(".continue-prompt-text"));
-      ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-    }
-
     driver.findElement(By.id("search_product")).click();
     driver.findElement(By.id("search_product")).sendKeys("Stylish Dress");
     // sprawdzanie czy dobrze wpisało
